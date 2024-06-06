@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+{% load humanize %}
+
+{% block content %}
+<h1>{{room.name}}</h1>
+
+<p>{{room.description}}</p>
+
+<div class="comment-wrapper">
+    <h3>Conversation</h3>
+    <hr>
+    {% for message in room_messages %}
+        <div>
+            <small>@{{message.user}} {{message.created|naturaltime}}</small>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}s

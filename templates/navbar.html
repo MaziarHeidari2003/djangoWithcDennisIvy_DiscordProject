@@ -1,0 +1,21 @@
+<a href="/">
+
+    <h1>LOGO</h1>
+</a>
+    <form method="GET" action="{% url 'base:home' %}">
+        <input type="text" name="q" placeholder="Search Rooms">  
+        <!--
+            w didnt want the user to type what he wants in the url as the q parameter, so we made this search bar wich sends a q to the home view
+            to filter rooms based on q
+        -->
+    </form>
+
+    {% if request.user.is_authenticated %}
+    <p>Hello {{request.user}}</p>
+    <a href="{% url 'base:logout' %}">Login</a>
+   
+    {% else %}
+    <a href="{% url 'base:login' %}">Login</a>
+    {% endif %}
+
+<hr>
