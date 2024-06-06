@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .models import Room,Topic
+from .models import Room,Topic,Message
 from django.db.models import Q
 from .forms import RoomForm
 from django.contrib.auth.models import User
@@ -78,6 +78,15 @@ def home(request):
 def room(request,pk):
   room = Room.objects.get(id=pk)
   room_messages = room.message_set.all().order_by('-created')
+
+  if request.method=='POST':
+    message=Message.objects.create(
+      user=request.user,
+      room=room,
+      body=request.POST.get('body')
+    )
+    return redirect('base:room',pk=room.id) # we could just not do it but this is a post request and it was gonna mess somethings m so ...
+
   return render(request, 'base/room.html',{
     'room':room,
     'room_messages':room_messages

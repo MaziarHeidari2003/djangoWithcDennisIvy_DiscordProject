@@ -2,17 +2,47 @@
 {% load humanize %}
 
 {% block content %}
-<h1>{{room.name}}</h1>
 
-<p>{{room.description}}</p>
+  <style>
+      .room-container{
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+        
+      }
+  </style>
 
-<div class="comment-wrapper">
-    <h3>Conversation</h3>
-    <hr>
-    {% for message in room_messages %}
-        <div>
-            <small>@{{message.user}} {{message.created|naturaltime}}</small>
-        </div>
-    {% endfor %}
+<div class="room-container">
+  <h1>{{room.name}}</h1>
+
+  <p>{{room.description}}</p>
+  
+  <div class="comment-wrapper">
+      <h3>Conversation</h3>
+      <hr>
+      {% for message in room_messages %}
+          <div>
+              <small>@{{message.user}} {{message.created|naturaltime}}</small>
+              <p>{{message.body}}</p>
+              <hr>
+          </div>
+      {% endfor %}
+  </div>
+  
+  {% if request.user.is_authenticated %}
+      <div class="comment-form">
+        <form action="" method="POST">
+            {% csrf_token %}
+  
+            <input type="text" name="body" placeholder="Write ypur comment...">
+        </form>
+  
+      </div>
+
+
+{% endif %}
+<div>
+    <h3>Participants</h3>
 </div>
-{% endblock %}s
+</div>
+
+{% endblock %}
