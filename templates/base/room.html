@@ -20,7 +20,7 @@
       <hr>
       {% for message in room_messages %}
           <div>
-            {% if request.user==message.user %}
+            {% if request.user == message.user %}
               <a href="{% url 'base:delete-message' message.id %}">Delete</a>
             {% endif %}  
               <small>@{{message.user}} {{message.created|naturaltime}}</small>
