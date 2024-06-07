@@ -45,9 +45,12 @@ def loginPage(request):
     password=request.POST.get('password')
 
     try:
-      user = User.objects.get(username=username)
+      user = User.objects.get(username=username) # why should i have this tyr and except block? why dont i just move to authenticate
     except:
       messages.error(request, "Username not fount.") 
+
+
+      # handling custom user models, security,more accurate error messages
 
     user = authenticate(request,username=username,password=password)
     if user:
@@ -68,8 +71,11 @@ def home(request):
       Q(description__icontains=q)) #nice syntax to reach the second layer
   topics=Topic.objects.all()
   room_count= rooms.count()
+  room_messages = Message.objects.all()# this is for the third fraction in the home
+
 
   return render(request,'base/home.html',{
+    'room_messages':room_messages,
     'rooms':rooms,
     'topics':topics,
     'room_count':room_count
@@ -78,18 +84,21 @@ def home(request):
 def room(request,pk):
   room = Room.objects.get(id=pk)
   room_messages = room.message_set.all().order_by('-created')
+  participants = room.participants.all()
 
-  if request.method=='POST':
+  if request.method=='POST':   # this kind of form handling is somehow new and wierd and simple
     message=Message.objects.create(
       user=request.user,
       room=room,
       body=request.POST.get('body')
     )
+    room.participants.add(request.user)
     return redirect('base:room',pk=room.id) # we could just not do it but this is a post request and it was gonna mess somethings m so ...
 
   return render(request, 'base/room.html',{
     'room':room,
-    'room_messages':room_messages
+    'room_messages':room_messages,
+    'participants':participants
   })
 
 
@@ -148,4 +157,25 @@ def deleteRoom(request,pk):
     return redirect('base:home')
   return render(request,'base/delete.html',{
     'obj':room
+  })
+
+
+
+
+
+
+@login_required(login_url='/login') 
+def deleteMessage(request,pk):
+  message = Message.objects.get(id=pk)
+
+  # if a user who is not the host, he is not alloewd to delete the room
+
+  if request.user != message.user:
+    return HttpResponse('You are not allowed to do it')
+
+  if request.method == 'POST':
+    message.delete()
+    return redirect('base:home')
+  return render(request,'base/delete.html',{
+    'obj':message
   })

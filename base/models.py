@@ -8,6 +8,7 @@ class Room(models.Model):
   description=models.TextField(null=True,blank=True)
   updated = models.DateTimeField(auto_now=True)
   created = models.DateTimeField(auto_now_add=True)
+  participants=models.ManyToManyField(User,blank=True,related_name='participants')
 
 
   def __str__(self):
