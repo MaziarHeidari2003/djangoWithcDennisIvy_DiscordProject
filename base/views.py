@@ -71,7 +71,9 @@ def home(request):
       Q(description__icontains=q)) #nice syntax to reach the second layer
   topics=Topic.objects.all()
   room_count= rooms.count()
-  room_messages = Message.objects.all()# this is for the third fraction in the home
+  room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))# this is for the third fraction in the home
+
+
 
 
   return render(request,'base/home.html',{
@@ -80,6 +82,11 @@ def home(request):
     'topics':topics,
     'room_count':room_count
   })
+"""
+
+This behavior allows you to organize your templates into smaller, reusable components without having to make significant changes to your views. As long as the context variables needed by the included template are provided by the view, the included template will have access to the necessary data.
+Your view function continues to work as expected because it is still rendering the main template. The view function doesn't need to know about the included templates, as the main template will take care of including the additional content.
+"""
 
 def room(request,pk):
   room = Room.objects.get(id=pk)
