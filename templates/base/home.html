@@ -11,17 +11,7 @@
 
   <div class="home-container">
     <div>
-        <h3>Browse Topics</h3>
-        <hr>
-        <div>
-          <a href="{% url 'base:home' %}">All</a>
-      </div>
-
-        {% for topic in topics %}
-          <div>
-              <a href="{% url 'base:home' %}?q={{topic.name}}">{{topic.name}}</a>
-          </div>
-        {% endfor %}
+        {% include 'base/topics_component.html' %}
     </div>
 
     <div>
@@ -32,37 +22,13 @@
       <div>
 
         <div>
-            {% for room in rooms  %}
-  
-              <div>
-                {% if request.user == room.host %} <!--
-                  so i dont want everyone to be able to edit or delete except the owner
-                -->
-                  <a href="{% url 'base:update-room' room.id %}">Edit</a>
-                  <a href="{% url 'base:delete-room' room.id  %}">Delete</a>
-                {% endif %}
-  
-                <span>@{{room.host.username}}</span>
-                  <h5>{{room.id}} --<a href="{% url 'base:room' room.id %}"> {{room.name}}</a></h5>
-                  <small>{{room.topic.name}}</small>
-                  <hr>
-              </div>
-            {% endfor %}
+              {% include 'base/feeds_component.html' %}
         </div>
       </div>
     </div>
 
     <div>
-      <h3>Recent Activity</h3>
-      <hr>
-      {% for message in room_messages %}
-          <div>
-              <small>@{{message.user}} {{message.created|timesince}}</small>
-              <small>replied to "{{message.room}}"</small>
-
-              <p>{{message}}</p>
-          </div>
-      {% endfor %}
+        {% include 'base/activity_component.html' %}
     </div>
        
   </div>
