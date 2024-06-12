@@ -186,3 +186,19 @@ def deleteMessage(request,pk):
   return render(request,'base/delete.html',{
     'obj':message
   })
+
+
+
+def userProfile(request,pk):
+  user= User.objects.get(id=pk)
+  rooms = user.room_set.all() # all the rooms which have a foreign key to the user
+  room_messages = user.message_set.all() 
+  topics = Topic.objects.all()
+  return render(request,'base/profile.html',{
+    'user':user,
+    'rooms':rooms,
+    'topics':topics,
+    'room_messages':room_messages
+
+  })# im goinh to use include tags wich i have used before, so its important to take care
+  # of the names given so taht there is no conflict between them and template names
