@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+STATICFILES_DIRS = [     # added by me to know the static files , this is the only thing to make dgango understand the css , done!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  BASE_DIR / 'static'
+]
 
 # Application definition
 
