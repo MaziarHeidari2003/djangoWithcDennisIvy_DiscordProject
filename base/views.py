@@ -73,9 +73,6 @@ def home(request):
   room_count= rooms.count()
   room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))# this is for the third fraction in the home
 
-
-
-
   return render(request,'base/home.html',{
     'room_messages':room_messages,
     'rooms':rooms,
