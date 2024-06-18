@@ -118,6 +118,7 @@ def room(request,pk):
 @login_required(login_url='/login') # new syntax to make sure where the user is going to be 
 def createRoom(request):
   form = RoomForm()
+  topics=Topic.objects.all()
   if request.method == 'POST':
     form = RoomForm(request.POST)
     if form.is_valid():
@@ -126,13 +127,15 @@ def createRoom(request):
       room.save()
       return redirect('base:home')     # nice usage of redirect
   return render(request,'base/room_form.html',{
-    'form':form
+    'form':form,
+    'topics':topics
   })
 
 @login_required(login_url='/login') # new syntax to make sure where the user is going to be 
 def updateRoom(request,pk):
   room = Room.objects.get(id=pk)
   form = RoomForm(instance=room)
+  topics = Topic.objects.all()
   # if a user who is not the host, he is not alloewd to update the room
 
   if request.user != room.host:
@@ -145,7 +148,8 @@ def updateRoom(request,pk):
       return redirect("base:home")
 
   return render(request, 'base/room_form.html',{
-    'form':form
+    'form':form,
+    'topics':topics
   })
 
 

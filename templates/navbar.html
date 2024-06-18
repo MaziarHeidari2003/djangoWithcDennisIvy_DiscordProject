@@ -1,8 +1,8 @@
-
+{% load static %}
 <header class="header header--loggedIn">
     <div class="container">
       <a href="{% url 'base:home' %}" class="header__logo">
-        <img src="assets/logo.svg" />
+        <img src="{% static 'images/logo.svg' %}" />
         <h1>StudyBuddy</h1>
       </a>
       <form method="GET" action="{% url 'base:home' %}" class="header__search">
@@ -17,20 +17,16 @@
         </label>
       </form>
       <nav class="header__menu">
-        <!-- Not Logged In -->
-        <!-- <a href="/login.html">
-          <img src="./assets/avatar.svg" />
-          <p>Login</p>
-        </a> -->
+      
 
         <!-- Logged In -->
-
+        {% if user.is_authenticated %}
         <div class="header__user">
           <a href="profile.html">
             <div class="avatar avatar--medium active">
               <img src="https://randomuser.me/api/portraits/men/37.jpg" />
             </div>
-            <p>John Doe <span>@john_doe</span></p>
+            <p>John Doe <span>{{request.user.username}}</span></p>
           </a>
           <button class="dropdown-button">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -39,7 +35,13 @@
             </svg>
           </button>
         </div>
-
+        {% else %}
+              <!-- Not Logged In -->
+            <a href="{% url 'base:login' %}">
+              <img src="{% static 'images/avatar.svg' %}" />
+              <p>Login</p>
+            </a> 
+        {% endif %}
         <div class="dropdown-menu">
           <a href="settings.html" class="dropdown-link"
             ><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -50,7 +52,7 @@
             </svg>
             Settings</a
           >
-          <a href="login.html" class="dropdown-link"
+          <a href="{% url 'base:logout' %}" class="dropdown-link"
             ><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
               <title>sign-out</title>
               <path
@@ -68,6 +70,7 @@
   </header>
 
   
+  
 
  <!--
     <form method="GET" action="{% url 'base:home' %}">
@@ -78,6 +81,7 @@
        
     </form>
      -->
+<!--
 
     {% if request.user.is_authenticated %}
     <p>Hello {{request.user}}</p>
@@ -88,3 +92,5 @@
     {% endif %}
 
 <hr>
+-->
+  

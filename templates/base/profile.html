@@ -1,27 +1,50 @@
 {% extends 'main.html' %}
 
-
 {% block content %}
+<main class="profile-page layout layout--3">
+  <div class="container">
+    <!-- Topics Start -->
+    {% include 'base/topics_component.html' %}
+    <!-- Topics End -->
 
-<style>
-      .profile-container{
-        display: grid;
-        grid-template-columns: 1fr 3fr 1fr;
-      }
-</style>
-
-<h1>{{user.username}}</h1>
-
-<div class="profile-container">
-
-      <div>
-          {% include 'base/topics_component.html' %}
+    <!-- Room List Start -->
+    <div class="roomList">
+      <div class="profile">
+        <div class="profile__avatar">
+          <div class="avatar avatar--large active">
+            <img src="{{user.avatar.url}}" />
+          </div>
+        </div>
+        <div class="profile__info">
+          <h3>{{user.name}}</h3>
+          <p>@{{user.username}}</p>
+          {% if request.user == user %}
+          <a href="" class="btn btn--main btn--pill">Edit Profile</a>
+          {% endif %}
+        </div>
+        <div class="profile__about">
+          <h3>About</h3>
+          <p>
+            {{user.bio}}
+          </p>
+        </div>
       </div>
-      <div>
-          {% include 'base/feeds_component.html' %}
+
+      <div class="roomList__header">
+        <div>
+          <h2>Study Rooms Hosted by dennis_ivy</a>
+          </h2>
+        </div>
       </div>
-      <div>
-          {% include 'base/activity_component.html' %}
-      </div>
-</div>
-{% endblock %}
+      {% include 'base/feeds_component.html' %}
+
+
+    </div>
+    <!-- Room List End -->
+
+    <!-- Activities Start -->
+    {% include 'base/activity_component.html' %}
+    <!-- Activities End -->
+  </div>
+</main>
+{% endblock content %}
