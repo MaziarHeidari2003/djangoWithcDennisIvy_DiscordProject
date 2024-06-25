@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from .forms import UserForm
 
 def logoutUser(request):
   logout(request)
@@ -40,6 +41,7 @@ def loginPage(request):
     return redirect('base:home')
   
   page= 'login'
+  form = UserForm()
   if request.method == 'POST':
     username=request.POST.get('username').lower()
     password=request.POST.get('password')
@@ -47,7 +49,7 @@ def loginPage(request):
     try:
       user = User.objects.get(username=username) # why should i have this tyr and except block? why dont i just move to authenticate
     except:
-      messages.error(request, "Username not fount.") 
+      messages.error(request, "Username not found.") 
 
 
       # handling custom user models, security,more accurate error messages
@@ -59,8 +61,13 @@ def loginPage(request):
     else:
        messages.error(request, "Username or password does not exit.") 
 
+       """
+        Django's authenticate function, used in user = authenticate(request,username=username,password=password), also raises a User.DoesNotExist exception if the user doesn't exist. However, relying on this exception alone doesn't provide a clear error message for the user. By using the try-except block to check for the user's existence first, you can provide a more accurate error message like "Username not found" instead of "Username or password does not exist."
+       """
+
   return render(request,'base/login_register.html',{
-    'page':page
+    'page':page,
+    'form':form
   })
 
 def home(request):
@@ -218,3 +225,18 @@ def userProfile(request,pk):
 
   })# im goinh to use include tags wich i have used before, so its important to take care
   # of the names given so taht there is no conflict between them and template names
+
+
+@login_required(login_url='/login')
+def updateUser(request):
+  user = request.user
+  form = UserForm(instance=user)
+  if request.method=='POST':
+    form = UserForm(request.POST,instance=user)
+    if form.is_valid():
+      form.save()
+      return redirect('base:user-profile',pk=user.id)
+  return render(request,'base/update-user.html',{
+    'form':form,
+
+  })
