@@ -12,7 +12,9 @@ path('delet-room/<int:pk>',deleteRoom,name='delete-room'),
 path('login/',loginPage,name='login'),
 path('logout/',logoutUser,name='logout'),
 path('register/',registerUser,name='register'),
-path('delet-message/<int:pk>',deleteMessage,name='delete-message'),
+path('delete-message/<int:pk>',deleteMessage,name='delete-message'),
+path('update-user/',updateUser,name='update-user'),
+
 
 
 
