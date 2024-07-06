@@ -14,6 +14,9 @@ path('logout/',logoutUser,name='logout'),
 path('register/',registerUser,name='register'),
 path('delete-message/<int:pk>',deleteMessage,name='delete-message'),
 path('update-user/',updateUser,name='update-user'),
+path('topics/',topics,name='topics'),
+path('activity/',activityPage,name='activity')
+
 
 
 

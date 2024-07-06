@@ -65,7 +65,7 @@
           <div class="layout__body">
             <h2 class="auth__tagline">Find your study partner</h2>
 
-            <form class="form" action="" metod="POST">
+            <form class="form" action="" method="POST">
               {%csrf_token %}
 
               {% for field in form %}
@@ -100,7 +100,7 @@
 
             <div class="auth__action">
               <p>Already signed up?</p>
-              <a href="{% url 'base:login' %}" class="btn btn--link">Sign Up</a>
+              <a href="{% url 'base:login' %}" class="btn btn--link">Login</a>
             </div>
           </div>
         </div>
