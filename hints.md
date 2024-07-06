@@ -62,3 +62,79 @@ well I know to ways to pass the inputs:
 Using keyword arguments:  {% url 'base:home' sth %}
 Using positional arguments: {% url 'base:home' %}?q={{topic.name}}
 How to retrieve positional args: q=request.GET.get('q') 
+
+
+
+
+
+
+problem4:
+
+topic,created=Topic.objects.get_or_create(name=topic_name) # this is wild !!
+
+The get_or_create method is indeed a powerful and convenient feature in Django's ORM. It attempts to fetch an object from the database based on the provided filters. If an object with those filters doesn't exist, it creates one with the given parameters.
+
+
+problem5:
+  Well while using django model forms for posting data you might use .is_valid() and form.save() syntax, Well that is great, But what if you want to treat a field a bit defferent?
+  Im going to show two ways:
+
+  def updateRoom(request,pk):
+    room = Room.objects.get(id=pk)
+    form = RoomForm(instance=room)
+    topics = Topic.objects.all()
+    # if a user who is not the host, he is not alloewd to update the room
+
+    if request.user != room.host:
+      return HttpResponse('You are not allowed to do it')
+
+    if request.method == 'POST':
+        topic_name=request.POST.get('topic')
+        topic,created =Topic.objects.get_or_create(name=topic_name)
+        form= RoomForm(request.POST,instance=room)
+        room.topic=topic
+        room.description = request.POST.get('description')
+        room.name = request.POST.get('name')
+        room.save()
+        return redirect("base:home") 
+
+
+Well this way is ignoring a big part of vakidation 
+now the next solution:
+    if request.method=='POST':
+      topic_name=request.POST.get('topic')
+      form = RoomForm(request.POST,instance=room)
+      if form.is_valid():
+        topic,created=Topic.objects.get_or_create(name=topic_name)
+        room = form.save(commit=False)  # Create the instance without saving it yet
+        room.topic=topic
+        room.save()
+        return redirect("base:home")
+      else:
+        # Handle invalid form data
+      
+
+
+
+problem6:
+    Im always confused to user redirect or reverse , well i gotta learn this kinda methods someday!
+
+      return redirect('base:user-profile',pk=user.id)
+
+      All I need from this syntax is that the first arg should be the name of the desired url.
+
+
+
+
+
+
+problem7:
+While working with django rest_framework
+
+
+  First error to solve => Object of type Room is not JSON serializable
+  You cant just pass quesryset which is a python list to Response
+
+
+  Do you know anything about CORES? CROSS ORIGINE RESOURCE SHARING
+  DJANGO-CORES-HEADERS
