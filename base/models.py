@@ -1,5 +1,17 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+  pass
+
+
+
+
+
+
+
+
+# from django.contrib.auth.models import User
 
 class Room(models.Model):
   host = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)

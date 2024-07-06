@@ -138,3 +138,21 @@ While working with django rest_framework
 
   Do you know anything about CORES? CROSS ORIGINE RESOURCE SHARING
   DJANGO-CORES-HEADERS
+
+
+
+
+
+  problem8:
+
+      to customizer the user built in model of django you have to delete the migration and sqlite file first
+
+      
+      class User(AbstractUser):
+        pass
+
+
+
+      to be added in settings.py:
+         AUTH_USER_MODEL='base.User'
+
