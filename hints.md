@@ -138,3 +138,32 @@ While working with django rest_framework
 
   Do you know anything about CORES? CROSS ORIGINE RESOURCE SHARING
   DJANGO-CORES-HEADERS
+
+
+
+
+
+  problem8:
+    How to costomize the User model?
+
+    from django.contrib.auth.models import AbstractUser
+    class User(AbstractUser):
+      pass
+
+    first we need this lines in our models and then adding this line in settings.py:
+      AUTH_USER_MODEL='base.User'
+    now its time to migrate
+    if you are doing this halfway of the project, you have to delete the whole database first and delete the files created in migrations folder: 0001 and 0002 and ... 
+    and then migrate
+
+
+    how to add custom fields and making the username the email  :
+      name=models.CharField(max_length=200,null=True)
+      email=models.EmailField(unique=True,null=True)
+      bio=models.TextField(null=True)
+      USERNAME_FIELD='email' ==>do not forget qotations!!!!!!!!!
+      REQUIRED_FIELDS=[] #i dont really know what this field is doing
+      
+
+
+
